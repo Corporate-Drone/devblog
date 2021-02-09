@@ -1,0 +1,20 @@
+<% layout('layouts/boilerplate') %>
+
+  <% for (let blog of blogs) {%>
+    <% if(currentUser && blog.author.equals(currentUser._id)) { %> 
+  <div class="card mb-4 mx-auto">
+    <%if (blog.images.length) { %> 
+    <img src="<%=blog.images[0].url%> " class="card-img-top" alt="...">
+    <% } else {%> 
+      <img class="img-fluid" alt=""
+      src="https://res.cloudinary.com/dw2bqpmjv/image/upload/v1612319814/samples/landscapes/nature-mountains.jpg">
+      <% } %> 
+    <div class="card-body text-center">
+      <h5 class="card-title"><%=blog.title%></h5>
+      <p class="card-text"><small class="text-muted">Posted February 5, 2021 by <%=blog.author.username%> </small></p>
+      <p class="card-text"><%=blog.description%></p>
+      <a href="/blog/<%=blog._id%> " class="btn btn-primary">View Post</a>
+    </div>
+  </div>
+<% } %> 
+  <% } %> 

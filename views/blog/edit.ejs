@@ -1,0 +1,35 @@
+<% layout('layouts/boilerplate') %>
+<a href="/blog">All Posts</a>
+  <div class="container">
+    <h1 class="text-center">Edit Post</h1>
+    <div class="col-md-6 offset-md-3">
+        <form action="/blog/<%=blog._id%>?_method=PUT" method="POST" novalidate class="validated-form">
+            <!-- enctype="multipart/form-data" might be needed -->
+            <div class="mb-3">
+                <label class="form-label" for="title"></label>
+                <input class="form-control" type="text" id="title" name="blog[title]" required value="<%=blog.title%>">
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="description"></label>
+                <input class="form-control" type="text" id="description" name="blog[description]" required value="<%=blog.description%>">
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Choose image(s)...</label>
+                <input class="form-control-file" type="file" id="image" name="image" multiple>
+              </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="description">Text</label>
+                <textarea class="form-control" type="text" id="text" name="blog[text]" required><%=blog.text%></textarea>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+            <div class="mb-3"><button class="btn btn-success">Update</button></div> 
+        </form>
+        <a href="/blog">All Posts</a>
+    </div>
+</div>
