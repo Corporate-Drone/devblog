@@ -131,7 +131,7 @@ app.put('/blog/:id', upload.array('image'), async (req, res) => {
     //map over array added to req.files through multer
     const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
     blog.images.push(...imgs); //add to existing images
-    
+
     if (req.body.deleteImages) {
         //removes images in cloudinary
         for (let filename of req.body.deleteImages) {
@@ -168,6 +168,26 @@ app.get('/register', (req, res) => {
     res.render('users/register');
 })
 
+app.get('/users', async (req, res) => {
+    const users = await User.find({});
+    res.render('users/users', { users });
+})
+
+app.get('/users/:username', async (req, res) => {
+    const { username } = req.params;
+    const blogs = await Blog.find({}).populate('author');
+
+    //get blog data only if it matches the username
+    const userBlogs = [];
+    for (let blog of blogs) {
+        if (blog.author.username === username) {
+            userBlogs.push(blog);
+        }
+    }
+
+    res.render('users/username', { userBlogs });
+})
+
 app.get('/logout', (req, res) => {
     req.logout();
     req.flash('success', 'Come back soon!');
@@ -196,10 +216,10 @@ app.delete('/blog/:id/comments/:commentId', async (req, res) => {
 
 app.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
     req.flash('success', 'Welcome back!');
-        //redirect to previous page
-        const redirectUrl = req.session.returnTo || '/blog';
-        delete req.session.returnTo;
-        res.redirect(redirectUrl);
+    //redirect to previous page
+    const redirectUrl = req.session.returnTo || '/blog';
+    delete req.session.returnTo;
+    res.redirect(redirectUrl);
 })
 
 app.post('/register', async (req, res) => {

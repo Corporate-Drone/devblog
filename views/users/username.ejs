@@ -1,7 +1,8 @@
-<% layout('layouts/boilerplate') %>
+<% layout('layouts/boilerplate')%>
 
-  <% for (let blog of blogs) {%>
-    <% if(currentUser && blog.author.equals(currentUser._id)) { %> 
+<% for (let blog of userBlogs) {%>
+  <% if(userBlogs) {%> 
+    
   <div class="card mb-4 mx-auto">
     <%if (blog.images.length) { %> 
     <img src="<%=blog.images[0].url%> " class="card-img-top" alt="...">

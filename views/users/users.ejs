@@ -1,0 +1,6 @@
+<% layout('layouts/boilerplate')%>
+<% for (user of users) { %> 
+    <div class="card mb-4">
+        <div class="card-body"><a href="/users/<%=user.username%>"><%=user.username%></a></div>
+    </div>
+    <% } %> 
