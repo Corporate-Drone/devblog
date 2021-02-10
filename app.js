@@ -19,6 +19,7 @@ const { isLoggedIn } = require('./middleware');
 const multer = require('multer');
 const { storage } = require('./cloudinary');
 const upload = multer({ storage });
+const { cloudinary } = require('./cloudinary');
 // const upload = multer({ dest: 'uploads/' })
 
 mongoose.connect('mongodb://localhost:27017/blog', {
@@ -101,7 +102,6 @@ app.post('/blog', upload.array('image'), async (req, res) => {
     //map over array added to req.files through multer
     blog.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
     await blog.save();
-    console.log(blog);
     res.redirect(`/blog/${blog._id}`)
 })
 
@@ -112,7 +112,6 @@ app.get('/blog/:id', (async (req, res) => {
             path: 'author'
         }
     }).populate('author'))
-    console.log(blog);
     res.render('blog/show', { blog });
 
     //populate comments with author
@@ -125,10 +124,23 @@ app.get('/blog/:id/edit', async (req, res) => {
 })
 
 
-app.put('/blog/:id', async (req, res) => {
+app.put('/blog/:id', upload.array('image'), async (req, res) => {
     const { id } = req.params;
-    console.log(req.body.blog)
     const blog = await Blog.findByIdAndUpdate(id, { ...req.body.blog });
+
+    //map over array added to req.files through multer
+    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    blog.images.push(...imgs); //add to existing images
+    
+    if (req.body.deleteImages) {
+        //removes images in cloudinary
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename);
+        }
+        //remove any images checked off to be deleted
+        await blog.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+    }
+
     await blog.save();
     req.flash('success', 'Successfully updated post!');
     res.redirect(`/blog/${blog._id}`);
@@ -136,6 +148,13 @@ app.put('/blog/:id', async (req, res) => {
 
 app.delete('/blog/:id', async (req, res) => {
     const { id } = req.params;
+    const foundBlog = await Blog.findById(id)
+    //remove blog images in cloudinary
+    for (let image of foundBlog.images) {
+        console.log(image.filename)
+        await cloudinary.uploader.destroy(image.filename);
+    }
+    //find and delete blog
     await Blog.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted post!');
     res.redirect('/blog');

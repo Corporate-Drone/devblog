@@ -15,12 +15,12 @@ const seedBlogs = new Blog({
     title: 'Plastic Onslaught',
     images: [{
         url:
-            'https://res.cloudinary.com/dw2bqpmjv/image/upload/v1612319799/sample.jpg',
+            'https://res.cloudinary.com/dw2bqpmjv/image/upload/v1612319805/samples/sheep.jpg',
         filename: 'YelpCamp/jhmd2okanqpinkwqehqc'
     },
     {
         url:
-            'https://res.cloudinary.com/dw2bqpmjv/image/upload/v1612319799/sample.jpg',
+            'https://res.cloudinary.com/dw2bqpmjv/image/upload/v1612319805/samples/sheep.jpg',
         filename: 'YelpCamp/t0o6rexg4tvtou6c9mel'
     }],
     description: 'Coming soon!',
