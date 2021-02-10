@@ -184,7 +184,6 @@ app.get('/users/:username', async (req, res) => {
             userBlogs.push(blog);
         }
     }
-
     res.render('users/username', { userBlogs });
 })
 
