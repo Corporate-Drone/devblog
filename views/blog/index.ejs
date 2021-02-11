@@ -11,7 +11,7 @@
       <% } %> 
     <div class="card-body text-center">
       <h5 class="card-title"><%=blog.title%></h5>
-      <p class="card-text"><small class="text-muted">Posted February 5, 2021 by <a href="/users/<%=blog.author.username%>"><%=blog.author.username%></a> </small></p>
+      <p class="card-text"><small class="text-muted">Posted <%=blog.date %>  by <a href="/users/<%=blog.author.username%>"><%=blog.author.username%></a> </small></p>
       <p class="card-text"><%=blog.description%></p>
       <a href="blog/<%=blog._id%> " class="btn btn-primary">View Post</a>
     </div>

@@ -20,6 +20,7 @@ const multer = require('multer');
 const { storage } = require('./cloudinary');
 const upload = multer({ storage });
 const { cloudinary } = require('./cloudinary');
+const date = require('./public/javascripts/currentDate');
 // const upload = multer({ dest: 'uploads/' })
 
 mongoose.connect('mongodb://localhost:27017/blog', {
@@ -99,6 +100,7 @@ app.get('/blog/myblogs', async (req, res) => {
 app.post('/blog', upload.array('image'), async (req, res) => {
     const blog = new Blog(req.body.blog)
     blog.author = req.user._id;
+    blog.date = date; //get current date
     //map over array added to req.files through multer
     blog.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
     await blog.save();
@@ -198,8 +200,8 @@ app.post('/blog/:id/comments', async (req, res) => {
     const comment = new Comment(req.body.comment);
     //set author of new review as current user
     comment.author = req.user._id;
+    comment.date = date; //set current date
     blog.comments.push(comment);
-    console.log(blog)
     await comment.save();
     await blog.save();
     res.redirect(`/blog/${blog._id}`);

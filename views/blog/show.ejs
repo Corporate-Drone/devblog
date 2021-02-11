@@ -30,7 +30,10 @@
       <h5 class="card-title">
         <%=blog.title%>
       </h5>
-      <p class="card-text"><small class="text-muted">Posted February 5, 2021 by <%=blog.author.username%></small></p>
+      <p class="card-text"><small class="text-muted">Posted <%=blog.date %> by <a
+              href="/users/<%=blog.author.username%>">
+              <%=blog.author.username%>
+            </a></small></p>
       <p class="card-text">
         <%=blog.description%>
       </p>
@@ -64,8 +67,15 @@
             <div class="card mb-3">
               <div class="card-body">
                 <h5 class="card-title">
-                  <%=comment.author.username%>
+                  <a href="/users/<%=comment.author.username%>">
+                    <%=comment.author.username%>
+                  </a>
                 </h5>
+                <p class="card-test">
+                  <small class="text-muted">
+                    <%=comment.date%>
+                  </small>
+                </p>
                 <p class="card-text">
                   <%-comment.body%>
                 </p>
