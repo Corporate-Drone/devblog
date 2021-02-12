@@ -1,0 +1,28 @@
+<% layout('layouts/boilerplate')%>
+
+<form action="/users/<%=username%>/edit?_method=PUT" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+    <!-- enctype="multipart/form-data" -->
+    <div class="mb-3">
+        <label for="image" class="form-label">Upload a profile picture </label>
+        <input class="form-control-file" type="file" id="image" name="image">
+      </div>
+
+      <!-- display image to be deleted if there is one -->
+      <% if(user.image.url) { %> 
+      <div class="mb-3">
+            <img src="<%=user.image.url %>" class="img-thumbnail" alt="">
+            <div class="form-check-inline">
+                <input type="checkbox" id="image-1" name="deleteImages[]" value="<%=user.image.filename%>">
+            </div>
+            <label for="image-1">Delete?</label>
+    </div>
+    <% } %> 
+
+      <div class="mb-3">
+        <label class="form-label" for="about">About Me</label>
+        <textarea class="form-control" type="text" id="about" name="about"><%=user.about%></textarea required>
+        <div class="valid-feedback">Valid.</div>
+        <div class="invalid-feedback">Please fill out this field.</div>
+      </div>
+      <div class="mb-3"><button class="btn btn-success">Save</button></div> 
+    </form>

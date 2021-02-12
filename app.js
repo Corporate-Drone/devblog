@@ -42,8 +42,8 @@ app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
+app.use(express.urlencoded({ extended: true })); //used to parse req.body
+app.use(methodOverride('_method')); //make delete, put, etc requests
 app.use(express.static(path.join(__dirname, 'public')));
 
 const secret = process.env.SECRET || 'thishouldbeabettersecret!';
@@ -178,6 +178,7 @@ app.get('/users', async (req, res) => {
 app.get('/users/:username', async (req, res) => {
     const { username } = req.params;
     const blogs = await Blog.find({}).populate('author');
+    const user = await User.findOne({username: username});
 
     //get blog data only if it matches the username
     const userBlogs = [];
@@ -186,7 +187,54 @@ app.get('/users/:username', async (req, res) => {
             userBlogs.push(blog);
         }
     }
-    res.render('users/username', { userBlogs });
+    res.render('users/username', { userBlogs, user });
+})
+
+app.get('/users/:username/edit', async (req, res) => {
+    const { username } = req.params;
+    const user = await User.findOne({ username: username });
+    res.render('users/setup', { username, user });
+})
+
+app.put('/users/:username/edit', upload.single('image'), async (req, res) => {
+    const { username } = req.params;
+    const { about } = req.body;
+
+
+    //find user and update profile image & about
+    if (req.file) {
+        await User.findByIdAndUpdate(req.user._id, {
+            image: {
+                url: req.file.path,
+                filename: req.file.filename
+            },
+        });
+    } else if (req.body.about) {
+        await User.findByIdAndUpdate(req.user._id, {about});
+    }
+
+    // await User.findByIdAndUpdate(req.user._id, {
+    //     image: {
+    //         url: req.file.path,
+    //         filename: req.file.filename
+    //     },
+    //     about
+    // });
+
+    if (req.body.deleteImages) {
+        //removes images in cloudinary
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename);
+        }
+            await User.findByIdAndUpdate(req.user._id, {
+        image: {
+            url: null,
+            filename: null
+        }
+    });
+    }
+
+    res.redirect(`/users/${username}`);
 })
 
 app.get('/logout', (req, res) => {
