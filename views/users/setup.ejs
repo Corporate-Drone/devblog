@@ -1,5 +1,7 @@
 <% layout('layouts/boilerplate')%>
 
+<a href="/users/<%=username%>">Back to Profile</a>
+
 <form action="/users/<%=username%>/edit?_method=PUT" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
     <!-- enctype="multipart/form-data" -->
     <div class="mb-3">
@@ -7,6 +9,7 @@
         <input class="form-control-file" type="file" id="image" name="image">
       </div>
 
+      <% if (typeof user.image !== 'undefined' && typeof user.about !== 'undefined') {%> 
       <!-- display image to be deleted if there is one -->
       <% if(user.image.url) { %> 
       <div class="mb-3">
@@ -26,3 +29,14 @@
       </div>
       <div class="mb-3"><button class="btn btn-success">Save</button></div> 
     </form>
+
+    <% } else { %> 
+        <div class="mb-3">
+            <label class="form-label" for="about">About Me</label>
+            <textarea class="form-control" type="text" id="about" name="about"></textarea required>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+          </div>
+          <div class="mb-3"><button class="btn btn-success">Save</button></div> 
+        </form>
+        <% } %> 

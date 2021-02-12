@@ -1,13 +1,21 @@
 <% layout('layouts/boilerplate')%>
 
+<div class="card mb-4">
+  <h5 class="card-header"><%=user.username%></h5>
+<!-- display profile image & about me -->
  <% if (user.image && user.about) { %> 
 <img src="<%=user.image.url %>" alt="">
 <%=user.about%> 
-<% } %> 
+<!-- display profile image if there's no about me -->
+<% } else if (user.image) { %> 
+  <img src="<%=user.image.url %>" alt="">
+  <% } %> 
 
-<%# if(currentUser.equals(user)) {%> 
-<!-- <a href="<%#=user.username%>/edit">Edit Profile</a> -->
-<%# } %> 
+<!-- allow user to edit profile info if they are logged in -->
+<% if(typeof currentUser !== 'undefined' && currentUser.equals(user)) {%> 
+<a href="<%=user.username%>/edit">Edit Profile</a>
+<% } %> 
+</div>
 
 <% for (let blog of userBlogs) {%>
   <div class="card mb-4 mx-auto">

@@ -178,7 +178,7 @@ app.get('/users', async (req, res) => {
 app.get('/users/:username', async (req, res) => {
     const { username } = req.params;
     const blogs = await Blog.find({}).populate('author');
-    const user = await User.findOne({username: username});
+    const user = await User.findOne({ username: username });
 
     //get blog data only if it matches the username
     const userBlogs = [];
@@ -199,9 +199,21 @@ app.get('/users/:username/edit', async (req, res) => {
 app.put('/users/:username/edit', upload.single('image'), async (req, res) => {
     const { username } = req.params;
     const { about } = req.body;
+        //remove image if selected to be deleted
+        if (req.body.deleteImages) {
+            //removes images in cloudinary
+            for (let filename of req.body.deleteImages) {
+                await cloudinary.uploader.destroy(filename);
+            }
+            await User.findByIdAndUpdate(req.user._id, {
+                image: {
+                    url: null,
+                    filename: null
+                }
+            });
+        }
 
-
-    //find user and update profile image & about
+    //update profile image & about me text
     if (req.file) {
         await User.findByIdAndUpdate(req.user._id, {
             image: {
@@ -209,29 +221,10 @@ app.put('/users/:username/edit', upload.single('image'), async (req, res) => {
                 filename: req.file.filename
             },
         });
-    } else if (req.body.about) {
-        await User.findByIdAndUpdate(req.user._id, {about});
-    }
-
-    // await User.findByIdAndUpdate(req.user._id, {
-    //     image: {
-    //         url: req.file.path,
-    //         filename: req.file.filename
-    //     },
-    //     about
-    // });
-
-    if (req.body.deleteImages) {
-        //removes images in cloudinary
-        for (let filename of req.body.deleteImages) {
-            await cloudinary.uploader.destroy(filename);
-        }
-            await User.findByIdAndUpdate(req.user._id, {
-        image: {
-            url: null,
-            filename: null
-        }
-    });
+        await User.findByIdAndUpdate(req.user._id, { about });
+        //only update about me
+    } else {
+        await User.findByIdAndUpdate(req.user._id, { about });
     }
 
     res.redirect(`/users/${username}`);
@@ -288,26 +281,6 @@ app.post('/register', async (req, res) => {
         res.redirect('register')
     }
 })
-
-
-// app.get('/fakeUser', async (req, res) => {
-//     const user = new User({ email: 'admin@gmail.com', username: 'admin' });
-//     const newUser = await User.register(user, 'test');
-//     res.send(newUser);
-// })
-
-// app.post('/posts', catchAsync(async (req, res) => {
-//     const { username, comment } = req.body;
-//     const newPost = new Post({
-//         uid: uuid(),
-//         username: username,
-//         comment: comment
-//     });
-//     await newPost.save();
-//     req.flash('success', 'Successfully created post!');
-//     res.redirect('/posts');
-// }))
-
 
 
 
