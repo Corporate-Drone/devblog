@@ -1,6 +1,12 @@
 <% layout('layouts/boilerplate')%>
 <% for (user of users) { %> 
     <div class="card mb-4">
-        <div class="card-body"><a href="/users/<%=user.username%>"><%=user.username%></a></div>
+        <div class="card-body">
+            <a href="/users/<%=user.username%>"><%=user.username%></a>
+            <!-- display user profile picture if it exists -->
+            <% if (user.image && user.image.filename) { %>
+                <img src="<%=user.image.url%>" alt="" class="img-thumbnail">
+           <% } %> 
+        </div>
     </div>
     <% } %> 

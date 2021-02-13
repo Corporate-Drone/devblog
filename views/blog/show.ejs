@@ -33,7 +33,13 @@
       <p class="card-text"><small class="text-muted">Posted <%=blog.date %> by <a
               href="/users/<%=blog.author.username%>">
               <%=blog.author.username%>
-            </a></small></p>
+            </a></small>
+
+        <!-- display user profile picture if it exists -->
+        <% if(user.image.filename) {%>
+          <img src="<%=user.image.url%>" alt="" class="img-thumbnail">
+          <% } %>
+      </p>
       <p class="card-text">
         <%=blog.description%>
       </p>

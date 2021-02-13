@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
 
   <a href="blog/new">New Post</a>
-  <% for (let blog of blogs) {%> 
+  <% for (let blog of blogs.reverse()) {%> 
   <div class="card mb-4 mx-auto">
     <%if (blog.images.length) { %> 
     <img src="<%=blog.images[0].url%> " class="card-img-top" alt="...">

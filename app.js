@@ -114,11 +114,14 @@ app.get('/blog/:id', (async (req, res) => {
             path: 'author'
         }
     }).populate('author'))
-    res.render('blog/show', { blog });
 
-    //populate comments with author
+    const user = await User.findOne({ username: blog.author.username });
+    res.render('blog/show', { blog, user });
+
+    
 }))
 
+//populate comments with author
 app.get('/blog/:id/edit', async (req, res) => {
     const { id } = req.params;
     const blog = await Blog.findById(id).populate('author');
