@@ -47,13 +47,14 @@
         <%-blog.text%>
       </p>
 
-      <!-- display edit & delete buttons only if the current user matches the blog author -->
-      <% if(currentUser && blog.author.equals(currentUser._id)) {%>
+      <!-- display edit & delete buttons only if the current user matches the blog author or if you are the admin -->
+      <% if(currentUser && blog.author.equals(currentUser._id) || currentUser.username=='admin' ) {%>
         <a href="/blog/<%=blog._id%>/edit " class="btn btn-primary">Edit</a>
         <form class="d-inline" action="/blog/<%=blog._id%>?_method=DELETE" method="POST">
           <button class="btn btn-danger">Delete</button>
         </form>
         <% } %>
+        <button type="button" class="btn btn-primary">Like</button>
     </div>
   </div>
 
@@ -81,12 +82,15 @@
                   <small class="text-muted">
                     <%=comment.date%>
                   </small>
+        <!-- display user profile picture if it exists -->
+        <% if(comment.author.image.filename) {%>
+          <img src="<%=comment.author.image.url%>" alt="" class="img-thumbnail">
+          <% } %>
                 </p>
                 <p class="card-text">
                   <%-comment.body%>
                 </p>
                 <% if(currentUser && comment.author.equals(currentUser._id)) {%>
-                  <a href="/blog/<%=blog._id%>/edit " class="btn btn-primary">Edit</a>
                   <form class="d-inline" action="/blog/<%=blog._id%>/comments/<%=comment._id%>?_method=DELETE"
                     method="POST">
                     <button class="btn btn-danger">Delete</button>
