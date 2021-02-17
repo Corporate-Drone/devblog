@@ -15,6 +15,12 @@
 <% if(typeof currentUser !== 'undefined' && currentUser.equals(user)) {%> 
 <a href="<%=user.username%>/edit">Edit Profile</a>
 <% } %> 
+      <!-- display delete button only if the current user matches the profile username or if you are the admin -->
+      <% if(currentUser && currentUser.username=='admin' || currentUser && currentUser.username == user.username ) {%>
+<form action="/users/<%=user.username%>?_method=DELETE" method="POST">
+  <button class="btn btn-danger">Delete Profile</button>
+</form>
+<% } %> 
 </div>
 
 <% for (let blog of userBlogs) {%>

@@ -48,13 +48,12 @@
       </p>
 
       <!-- display edit & delete buttons only if the current user matches the blog author or if you are the admin -->
-      <% if(currentUser && blog.author.equals(currentUser._id) || currentUser.username=='admin' ) {%>
+      <% if(currentUser && blog.author.equals(currentUser._id) || currentUser && currentUser.username=='admin' ) {%>
         <a href="/blog/<%=blog._id%>/edit " class="btn btn-primary">Edit</a>
         <form class="d-inline" action="/blog/<%=blog._id%>?_method=DELETE" method="POST">
           <button class="btn btn-danger">Delete</button>
         </form>
         <% } %>
-        <button type="button" class="btn btn-primary">Like</button>
     </div>
   </div>
 

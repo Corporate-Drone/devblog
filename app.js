@@ -117,8 +117,6 @@ app.get('/blog/:id', (async (req, res) => {
 
     const user = await User.findOne({ username: blog.author.username });
     res.render('blog/show', { blog, user });
-
-    
 }))
 
 //populate comments with author
@@ -193,6 +191,36 @@ app.get('/users/:username', async (req, res) => {
     res.render('users/username', { userBlogs, user });
 })
 
+app.delete('/users/:username', async (req, res) => {
+    const { username } = req.params;
+    const user = await User.findOne({ username: username });
+    const blogs = await Blog.find({}).populate('author');
+
+    for (let blog of blogs) {
+        if (blog.author.username === username) {
+            //delete cloudinary blog images
+            if (blog.images) {
+                for (let images of blog.images) {
+                    await cloudinary.uploader.destroy(images.filename);
+                }
+            }
+            //find and delete blog
+            await Blog.findByIdAndDelete(blog._id);
+        }
+    }
+    
+    //delete profile picture in cloudinary
+    if (user.image && user.image.filename !== null) {
+        await cloudinary.uploader.destroy(user.image.filename);
+    }
+    
+    //Finally delete user
+    await User.findByIdAndDelete(user._id);
+
+    req.flash('success', 'Successfully deleted account!');
+    res.redirect('/blog');
+})
+
 app.get('/users/:username/edit', async (req, res) => {
     const { username } = req.params;
     const user = await User.findOne({ username: username });
@@ -202,19 +230,19 @@ app.get('/users/:username/edit', async (req, res) => {
 app.put('/users/:username/edit', upload.single('image'), async (req, res) => {
     const { username } = req.params;
     const { about } = req.body;
-        //remove image if selected to be deleted
-        if (req.body.deleteImages) {
-            //removes images in cloudinary
-            for (let filename of req.body.deleteImages) {
-                await cloudinary.uploader.destroy(filename);
-            }
-            await User.findByIdAndUpdate(req.user._id, {
-                image: {
-                    url: null,
-                    filename: null
-                }
-            });
+    //remove image if selected to be deleted
+    if (req.body.deleteImages) {
+        //removes images in cloudinary
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename);
         }
+        await User.findByIdAndUpdate(req.user._id, {
+            image: {
+                url: null,
+                filename: null
+            }
+        });
+    }
 
     //update profile image & about me text
     if (req.file) {
