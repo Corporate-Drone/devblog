@@ -20,6 +20,12 @@ const BlogSchema = new Schema({
     date: String,
     description: String,
     text: String,
+    likes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ],
     author: {
         //acquire author ID & populate using User model
         type: Schema.Types.ObjectId,

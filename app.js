@@ -21,6 +21,7 @@ const { storage } = require('./cloudinary');
 const upload = multer({ storage });
 const { cloudinary } = require('./cloudinary');
 const date = require('./public/javascripts/currentDate');
+const user = require('./models/user');
 // const upload = multer({ dest: 'uploads/' })
 
 mongoose.connect('mongodb://localhost:27017/blog', {
@@ -113,7 +114,7 @@ app.get('/blog/:id', (async (req, res) => {
         populate: {
             path: 'author'
         }
-    }).populate('author'))
+    }).populate('author likes'))
 
     const user = await User.findOne({ username: blog.author.username });
     res.render('blog/show', { blog, user });
@@ -161,6 +162,20 @@ app.delete('/blog/:id', async (req, res) => {
     await Blog.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted post!');
     res.redirect('/blog');
+})
+
+app.post('/blog/:id/like', async (req, res) => {
+    const blog = await Blog.findById(req.params.id);
+
+    //add or remove like from blog
+    if (blog.likes.includes(req.user._id)) {
+        blog.likes.pull(req.user._id);
+    } else {
+        blog.likes.push(req.user);
+    }
+
+    await blog.save();
+    res.redirect(`/blog/${blog._id}`);
 })
 
 app.get('/login', (req, res) => {
