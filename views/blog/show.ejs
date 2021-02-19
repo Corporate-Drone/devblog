@@ -109,7 +109,7 @@
 </div>
 
 
-  <div class="card mb-4 mx-auto">
+  <div class="card mb-4 mx-auto" id="comments">
     <div class="card-body text-center">
       <h5>Comments</h5>
       <% if (currentUser) {%>
@@ -120,6 +120,7 @@
         </form>
         <% } %>
 
+          <% if( blog.comments.length > 0) { %> 
           <% for (let comment of blog.comments) { %>
             <div class="card mb-3">
               <div class="card-body">
@@ -156,6 +157,9 @@
             </div>
 
             <% } %>
+            <% } else {%> 
+                <p>Nobody has commented on this post yet!</p>
+              <% } %> 
 
     </div>
   </div>
