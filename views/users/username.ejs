@@ -17,11 +17,37 @@
 <% } %> 
       <!-- display delete button only if the current user matches the profile username or if you are the admin -->
       <% if(currentUser && currentUser.username=='admin' || currentUser && currentUser.username == user.username ) {%>
-<form action="/users/<%=user.username%>?_method=DELETE" method="POST">
-  <button class="btn btn-danger">Delete Profile</button>
-</form>
+
+        <!-- Button trigger modal -->
+<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+  Delete Profile
+</button>
 <% } %> 
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete your profile? Your data cannot be recovered!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <form action="/users/<%=user.username%>?_method=DELETE" method="POST">
+          <button class="btn btn-danger">Confirm Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <% for (let blog of userBlogs) {%>
   <div class="card mb-4 mx-auto">

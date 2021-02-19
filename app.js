@@ -294,6 +294,21 @@ app.post('/blog/:id/comments', async (req, res) => {
     res.redirect(`/blog/${blog._id}`);
 })
 
+app.get('/blog/:id/comments/:commentId/', async (req, res) => {
+    const blog = await Blog.findById(req.params.id);
+    const comment = await Comment.findById(req.params.commentId)
+    res.render('blog/editComment', {blog, comment});
+})
+
+app.put('/blog/:id/comments/:commentId/', async (req, res) => {
+    const blog = await Blog.findById(req.params.id);
+    const commentId = req.params.commentId;
+    const comment = await Comment.findByIdAndUpdate(commentId, { body: req.body.comment.body });
+    comment.editDate = date; //set current date
+    await comment.save();
+    res.redirect(`/blog/${blog._id}`);
+})
+
 app.delete('/blog/:id/comments/:commentId', async (req, res) => {
     const blog = await Blog.findById(req.params.id);
     const { id, commentId } = req.params;

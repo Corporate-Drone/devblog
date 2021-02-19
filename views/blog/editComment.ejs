@@ -1,0 +1,14 @@
+<% layout('layouts/boilerplate') %>
+<a href="/blog/<%=blog._id%>">Back</a>
+  <div class="container">
+    <h1 class="text-center">Edit Comment</h1>
+    <div class="card">
+        <div class="card-body">
+          <form action="/blog/<%=blog._id%>/comments/<%=comment._id%>?_method=PUT" method="POST">
+          <textarea class="form-control tinycloud" id="" cols="80" rows="3" id="body" name="comment[body]"><%=comment.body%> </textarea>
+          <button class="btn btn-primary">Save Changes</button>
+        </form>
+        </div>
+      </div>
+    </div>
+</div>

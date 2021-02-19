@@ -78,7 +78,7 @@
   See more details
 </button>
 
-<!-- Modal -->
+<!-- Likes Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -90,7 +90,7 @@
       </div>
       <div class="modal-body">
           <% if(blog.likes.length == 0) { %>
-            <p>No one has liked this blog post yet!</p>
+            <p>No one has liked this post yet!</p>
             <% } else { %> 
               <% for (user of blog.likes) { %>
                 <!-- display user profile picture if it exists -->
@@ -130,7 +130,10 @@
                 </h5>
                 <p class="card-test">
                   <small class="text-muted">
-                    <%=comment.date%>
+                    Posted <%=comment.date%>
+                    <% if (comment.editDate) { %>
+                      <p>Edited <%=comment.editDate %></p> 
+                      <% } %> 
                   </small>
         <!-- display user profile picture if it exists -->
         <% if(comment.author.image.filename) {%>
@@ -141,6 +144,9 @@
                   <%-comment.body%>
                 </p>
                 <% if(currentUser && comment.author.equals(currentUser._id)) {%>
+                  <a href="/blog/<%=blog._id%>/comments/<%=comment._id%>">
+                    <button class="btn btn-primary">Edit</button>
+                  </a>
                   <form class="d-inline" action="/blog/<%=blog._id%>/comments/<%=comment._id%>?_method=DELETE"
                     method="POST">
                     <button class="btn btn-danger">Delete</button>

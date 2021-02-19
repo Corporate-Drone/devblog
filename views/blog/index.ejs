@@ -13,6 +13,7 @@
       <h5 class="card-title"><%=blog.title%></h5>
       <p class="card-text"><small class="text-muted">Posted <%=blog.date %>  by <a href="/users/<%=blog.author.username%>"><%=blog.author.username%></a> </small></p>
       <p class="card-text"><%=blog.description%></p>
+      <button class="btn btn-primary">Likes (<%=blog.likes.length%>) </button>
       <a href="blog/<%=blog._id%> " class="btn btn-primary">View Post</a>
     </div>
   </div>
