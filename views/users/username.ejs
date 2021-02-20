@@ -5,8 +5,8 @@
 <!-- display profile image & about me -->
  <% if (user.image && user.about) { %> 
 <img src="<%=user.image.url %>" alt="">
-<%=user.about%> 
-<!-- display profile image if there's no about me -->
+<strong>About me:</strong> <%=user.about%> 
+<!-- display only profile image if there's no about me -->
 <% } else if (user.image) { %> 
   <img src="<%=user.image.url %>" alt="">
   <% } %> 
@@ -53,10 +53,7 @@
   <div class="card mb-4 mx-auto">
     <%if (blog.images.length) { %> 
     <img src="<%=blog.images[0].url%> " class="card-img-top" alt="...">
-    <% } else {%> 
-      <img class="img-fluid" alt=""
-      src="https://res.cloudinary.com/dw2bqpmjv/image/upload/v1612319814/samples/landscapes/nature-mountains.jpg">
-      <% } %> 
+    <% } %> 
     <div class="card-body text-center">
       <h5 class="card-title"><%=blog.title%></h5>
       <p class="card-text"><small class="text-muted">Posted <%=blog.date%>  by <a href="/users/<%=blog.author.username%>"><%=blog.author.username%></a> </small></p>
