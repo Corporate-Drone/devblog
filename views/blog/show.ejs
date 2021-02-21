@@ -2,16 +2,26 @@
 
   <a href="/blog">All Posts</a>
   <div class="card mb-4 mx-auto">
-    <div class="card-body">
-      <% if(blog.author.image.filename) { %> 
-        <img src="<%=blog.author.image.url%>" alt="" class="img-thumbnail">
-        <% } %> 
-        <p class="card-text"><small class="text-muted">
-          <a href="/users/<%=blog.author.username%>"><%=blog.author.username%></a> 
-          <%=blog.date %>
-        </small>
-        </p>  
+    <div class="card">
+      <div class="card-body d-flex flex-row">
+        <% if(blog.author.image.filename) { %> 
+          <img src="<%=blog.author.image.url%>" alt="" class="rounded-circle">
+          <% } else { %>
+            <img src="/images/avatar-placeholder.gif" alt="" class="rounded-circle">
+            <% } %> 
+          <div class="d-flex flex-column ml-2">
+          <div class="card-text font-weight-bold username">
+            <a href="/users/<%=blog.author.username%>"><%=blog.author.username%></a> 
+        </div>
+        <div class="card-text">
+          <small class="text-muted">
+            Posted <%=blog.date %>
+          </small>
+        </div> 
+        </div> 
+      </div>
     </div>
+    
     <div id="blogControls" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
         <!-- set only first image uploaded to the active class -->
@@ -47,6 +57,7 @@
       </p>
 
       <!-- check if user has already liked post and display the appropriate button -->
+      <div class="d-flex justify-content-center mb-2 ">
           <form action="/blog/<%=blog._id%>/like/" method="POST">
           <% if(currentUser && blog.likes.some(function (like) {
             return like.equals(currentUser._id)
@@ -68,7 +79,11 @@
               <% } %>
             </form>
 
-           
+            <!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#exampleModal">
+  See more details
+</button>
+</div>
 
       <!-- display edit & delete buttons only if the current user matches the blog author or if you are the admin -->
       <% if(currentUser && blog.author.equals(currentUser._id) || currentUser && currentUser.username=='admin' ) {%>
@@ -77,11 +92,6 @@
           <button class="btn btn-danger">Delete</button>
         </form>
         <% } %>
-
-          <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  See more details
-</button>
     </div>
   </div>
 
@@ -100,14 +110,19 @@
       <div class="modal-body">
           <% if(blog.likes.length == 0) { %>
             <p>No one has liked this post yet!</p>
-            <% } else { %> 
+            <% } else { %>
               <% for (user of blog.likes) { %>
                 <!-- display user profile picture if it exists -->
+                <div class="mb-3">
               <% if(user.image.filename) {%>
-                <img src="<%=user.image.url%>" alt="" class="img-thumbnail">
+                <img src="<%=user.image.url%>" alt="" class="rounded-circle">
+                <% } else { %>
+                  <img src="/images/avatar-placeholder.gif" alt="" class="rounded-circle">
+                  <% } %>
+                <a href="/users/<%=user.username%>"><%=user.username%></a>
+              </div>
                 <% } %>
-                <a href="/users/<%=user.username%>"><%=user.username%></a> 
-                <% } %>
+              
               <% } %> 
       </div>
       <div class="modal-footer">
@@ -138,24 +153,32 @@
           <% if( blog.comments.length > 0) { %> 
           <% for (let comment of blog.comments) { %>
             <div class="card mb-3">
+              <div class="card">
               <div class="card-body">
-                <h5 class="card-title">
-                  <a href="/users/<%=comment.author.username%>">
-                    <%=comment.author.username%>
-                  </a>
-                </h5>
-                <p class="card-test">
+                <div class="card-body d-flex flex-row">
+                  <!-- display user profile picture if it exists -->
+        <% if(comment.author.image.filename) {%>
+          <img src="<%=comment.author.image.url%>" alt="" class="rounded-circle">
+          <% } else { %>
+          <img src="/images/avatar-placeholder.gif" alt="" class="rounded-circle">
+            <% } %>
+                  
+          <div class="d-flex flex-column ml-2">
+                <div class="card-text font-weight-bold username">
+                  <a href="/users/<%=comment.author.username%>"><%=comment.author.username%></a>
+                </div> 
+                <div class="card-text">
                   <small class="text-muted">
-                    Posted <%=comment.date%>
+                    <%=comment.date%>
                     <% if (comment.editDate) { %>
                       <p>Edited <%=comment.editDate %></p> 
                       <% } %> 
                   </small>
-        <!-- display user profile picture if it exists -->
-        <% if(comment.author.image.filename) {%>
-          <img src="<%=comment.author.image.url%>" alt="" class="img-thumbnail">
-          <% } %>
-                </p>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
                 <p class="card-text">
                   <%-comment.body%>
                 </p>

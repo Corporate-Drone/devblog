@@ -164,7 +164,7 @@ app.delete('/blog/:id', async (req, res) => {
     res.redirect('/blog');
 })
 
-app.post('/blog/:id/like', async (req, res) => {
+app.post('/blog/:id/like', isLoggedIn, async (req, res) => {
     const blog = await Blog.findById(req.params.id);
 
     //add or remove like from blog

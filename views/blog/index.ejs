@@ -6,14 +6,18 @@
     <div class="card">
     <div class="card-body d-flex flex-row">
       <% if(blog.author.image.filename) { %> 
-        <img src="<%=blog.author.image.url%>" alt="" class="img-thumbnail">
-        <% } %> 
+        <img src="<%=blog.author.image.url%>" alt="" class="rounded-circle">
+        <% } else { %> 
+          <img src="/images/avatar-placeholder.gif" alt="" class="rounded-circle">
+          <% } %> 
         <div class="d-flex flex-column ml-2">
         <div class="card-text font-weight-bold username">
           <a href="/users/<%=blog.author.username%>"><%=blog.author.username%></a> 
       </div>
       <div class="card-text">
+        <small class="text-muted">
           <%=blog.date %>
+        </small>
       </div> 
       </div> 
     </div>
