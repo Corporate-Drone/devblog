@@ -1,13 +1,13 @@
 <% layout('layouts/boilerplate')%>
 
-<div class="card mb-4">
-  <h5 class="card-header"><%=user.username%></h5>
+<div class="card mb-4 shadow-sm">
+  <h5 class="card-header text-center"><%=user.username%></h5>
 <!-- display profile image & about me -->
  <% if (user.image && user.about) { %> 
-  <div class="d-flex justify-content-center m-4">
+  <div class="d-flex justify-content-center m-4 text-center">
     <div class="d-flex flex-column">
 <img src="<%=user.image.url %>" alt="" class="rounded-circle profile">
-<strong>About me:</strong> <%=user.about%>
+<strong class="mt-2">About me:</strong> <%=user.about%>
 </div>
 <!-- display only profile image if there's no about me -->
 <% } else if (user.image) { %> 
@@ -15,8 +15,11 @@
   <% } %> 
 </div>
 <!-- allow user to edit profile info if they are logged in -->
-<% if(typeof currentUser !== 'undefined' && currentUser.equals(user)) {%> 
-<a href="<%=user.username%>/edit">Edit Profile</a>
+<% if(typeof currentUser !== 'undefined' && currentUser.equals(user)) {%>
+  <div class="text-center mb-4">
+<a href="<%=user.username%>/edit">
+  <button class="btn btn-primary">Edit Profile</button>
+</a>
 <% } %> 
       <!-- display delete button only if the current user matches the profile username or if you are the admin -->
       <% if(currentUser && currentUser.username=='admin' || currentUser && currentUser.username == user.username ) {%>
@@ -25,6 +28,7 @@
 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
   Delete Profile
 </button>
+</div> 
 <% } %> 
 </div>
 
@@ -53,7 +57,7 @@
 
 
 <% for (let blog of userBlogs) {%>
-  <div class="card mb-4 mx-auto">
+  <div class="card mb-4 mx-auto shadow-sm">
     <div class="card">
       <div class="card-body d-flex flex-row">
         <% if(blog.author.image.filename) { %> 

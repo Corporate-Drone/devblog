@@ -1,6 +1,9 @@
 <% layout('layouts/boilerplate')%>
 
-<a href="/users/<%=username%>">Back to Profile</a>
+<div class="mb-4">
+  <a href="/users/<%=username%>">Back to Profile</a>
+</div>
+
 
 <form action="/users/<%=username%>/edit?_method=PUT" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
     <!-- enctype="multipart/form-data" -->

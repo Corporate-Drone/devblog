@@ -81,7 +81,12 @@ app.use((req, res, next) => {
 })
 
 app.get('/', (req, res) => {
-    res.render('home')
+    if (!req.user) {
+        res.render('home')
+    } else {
+        res.render('/')
+    }
+    
 })
 
 app.get('/blog', (async (req, res) => {

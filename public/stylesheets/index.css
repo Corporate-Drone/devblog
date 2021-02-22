@@ -21,3 +21,13 @@
     max-width: 300px;
     max-height: 300px;
 }
+
+.like-btn {
+border-top-right-radius: 0;
+border-bottom-right-radius: 0;
+}
+
+.details-btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}

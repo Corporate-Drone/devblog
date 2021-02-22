@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate')%>
 <% for (user of users) { %> 
-    <div class="card mb-4">
+    <div class="card mb-4 shadow-sm">
         <div class="card-body">
             <!-- display user profile picture if it exists -->
             <% if (user.image && user.image.filename) { %>
