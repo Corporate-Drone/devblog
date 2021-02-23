@@ -214,7 +214,13 @@ app.get('/users/:username', async (req, res) => {
 app.delete('/users/:username', async (req, res) => {
     const { username } = req.params;
     const user = await User.findOne({ username: username });
-    const blogs = await Blog.find({}).populate('author');
+    // const blogs = await Blog.find({}).populate('author');
+    const blogs = await (await Blog.find({}).populate({
+        path: 'comments',
+        populate: {
+            path: 'author'
+        }
+    }).populate('author likes'))
 
     for (let blog of blogs) {
         if (blog.author.username === username) {
@@ -226,6 +232,19 @@ app.delete('/users/:username', async (req, res) => {
             }
             //find and delete blog
             await Blog.findByIdAndDelete(blog._id);
+        }
+        //delete all comments made by user
+        for (let comments of blog.comments) {
+            if (comments.author.username === username) {
+                await Blog.findByIdAndUpdate(blog._id, {$pull: {comments: comments._id}})
+                await Comment.findByIdAndDelete(comments._id);
+            }
+        }
+        //remove all likes made by user
+        for (let likes of blog.likes) {
+            if (likes.username === username) {
+                await Blog.findByIdAndUpdate(blog._id, {$pull: {likes: likes._id}})
+            }
         }
     }
     
@@ -339,7 +358,7 @@ app.post('/register', async (req, res) => {
         req.login(registeredUser, err => {
             if (err) return next(err);
             //else
-            req.flash('success', 'Welcome to DevBlog!');
+            req.flash('success', 'Welcome to DevBlog! You can add a profile picture and add information about yourself for others to see by clicking "My Profile" in the navbar. ');
             res.redirect('/blog');
         });
     } catch (e) {
