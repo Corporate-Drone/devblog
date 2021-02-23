@@ -33,14 +33,14 @@ const BlogSchema = new Schema({
     },
     comments: [
         {
-            //acquire comment ID & populate using Review model
+            //acquire comment ID & populate using Comment model
             type: Schema.Types.ObjectId,
             ref: 'Comment'
         }
     ]
 }, opts);
 
-//review needs to be deleted (review is linked to Blog) after the corresponding blog has been deleted through middleware (after every findOneAndDelete)
+//comment needs to be deleted (comment is linked to Blog) after the corresponding blog has been deleted through middleware (after every findOneAndDelete)
 //previously deleted item is passed to middleware function
 BlogSchema.post('findOneAndDelete', async function (doc) {
     if (doc) {

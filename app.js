@@ -22,7 +22,6 @@ const upload = multer({ storage });
 const { cloudinary } = require('./cloudinary');
 const date = require('./public/javascripts/currentDate');
 const user = require('./models/user');
-// const upload = multer({ dest: 'uploads/' })
 
 mongoose.connect('mongodb://localhost:27017/blog', {
     useNewUrlParser: true,
@@ -315,7 +314,7 @@ app.post('/blog/:id/comments', async (req, res) => {
     blog.comments.push(comment);
     await comment.save();
     await blog.save();
-    res.redirect(`/blog/${blog._id}`);
+    res.redirect(`/blog/${blog._id}#comments`);
 })
 
 app.get('/blog/:id/comments/:commentId/', async (req, res) => {
@@ -358,7 +357,7 @@ app.post('/register', async (req, res) => {
         req.login(registeredUser, err => {
             if (err) return next(err);
             //else
-            req.flash('success', 'Welcome to DevBlog! You can add a profile picture and add information about yourself for others to see by clicking "My Profile" in the navbar. ');
+            req.flash('success', 'Welcome to DevBlog! You can add a profile picture and add information about yourself by clicking "My Profile" in the navbar.');
             res.redirect('/blog');
         });
     } catch (e) {
