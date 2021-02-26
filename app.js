@@ -13,18 +13,10 @@ const methodOverride = require('method-override');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
-const Blog = require('./models/blog');
-const Comment = require('./models/comment');
-const { isLoggedIn } = require('./middleware');
-const multer = require('multer');
-const { storage } = require('./cloudinary');
-const upload = multer({ storage });
-const { cloudinary } = require('./cloudinary');
-const date = require('./public/javascripts/currentDate');
-const user = require('./models/user');
 const userRoutes = require('./routes/users');
 const blogRoutes = require('./routes/blog');
 const commentRoutes = require('./routes/comments');
+const currentYear = require('./public/javascripts/currentYear');
 
 mongoose.connect('mongodb://localhost:27017/blog', {
     useNewUrlParser: true,
@@ -79,6 +71,7 @@ app.use((req, res, next) => {
     res.locals.currentUser = req.user; //passport user
     res.locals.success = req.flash('success'); //flash
     res.locals.error = req.flash('error'); //flash
+    res.locals.currentYear = currentYear;
     next();
 })
 

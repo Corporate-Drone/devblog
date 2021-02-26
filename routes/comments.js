@@ -2,10 +2,7 @@ const express = require('express');
 //access route params
 const router = express.Router({ mergeParams: true });
 const { validateComment, isLoggedIn, isCommentAuthor } = require('../middleware');
-const Blog = require('../models/blog');
-const Comment = require('../models/comment');
 const comments = require('../controllers/comments');
-const ExpressError = require('../utils/ExpressError');
 const catchAsync = require('../utils/catchAsync');
 
 

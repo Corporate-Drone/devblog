@@ -2,6 +2,7 @@ const User = require('../models/user');
 const Blog = require('../models/blog');
 const Comment = require('../models/comment');
 const { cloudinary } = require('../cloudinary');
+const { renderNewForm } = require('./blog');
 
 //show all registered blog users
 module.exports.renderAllUsers = async (req, res) => {

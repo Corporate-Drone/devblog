@@ -30,7 +30,8 @@ module.exports.validateBlog = (req, res, next) => {
 module.exports.isAuthor = async (req, res, next) => {
     const { id } = req.params; //take id from URL
     const blog = await Blog.findById(id); //lookup blog wth ID
-    if (!blog.author.equals(req.user._id)) { //check if logged in user ID is equal to blog author ID
+
+    if (!blog.author.equals(req.user._id) && req.user.username !== 'admin') { //check if logged in user ID is equal to blog author ID
         req.flash('error', 'You do not have permission to do that!');
         return res.redirect(`/blog/${id}`);
     }
@@ -40,7 +41,7 @@ module.exports.isAuthor = async (req, res, next) => {
 //check if account belongs to the current user
 module.exports.isAccount = async (req, res, next) => {
     const { username } = req.params; //take username from URL
-    if (username !== req.user.username) { //check if logged in user is equal to account name
+    if (username !== req.user.username && req.user.username !== 'admin') { //check if logged in user is equal to account name
         req.flash('error', 'You do not have permission to do that!');
         return res.redirect(`/users/${username}`);
     }
@@ -51,7 +52,7 @@ module.exports.isAccount = async (req, res, next) => {
 module.exports.isCommentAuthor = async (req, res, next) => {
     const { id, commentId } = req.params; //take id from URL get comment ID
     const comment = await Comment.findById(commentId); //lookup comment wth ID
-    if (!comment.author.equals(req.user._id)) { //check if logged in user ID is equal to comment author ID
+    if (!comment.author.equals(req.user._id) && req.user.username !== 'admin') { //check if logged in user ID is equal to comment author ID
         req.flash('error', 'You do not have permission to do that!');
         return res.redirect(`/blog/${id}`);
     }
