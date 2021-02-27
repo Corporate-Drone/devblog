@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate')%>
 
-<div class="card mb-4 shadow-sm">
+<div class="card mb-4 shadow-sm text-center">
   <h5 class="card-header text-center"><%=user.username%></h5>
 <!-- display profile image & about me -->
  <% if (user.image && user.about) { %> 
@@ -11,8 +11,10 @@
 </div>
 <!-- display only profile image if there's no about me -->
 <% } else if (user.image) { %> 
-  <img src="<%=user.image.url %>" alt="">
-  <% } %> 
+  <img src="<%=user.image.url %>" alt="" class="mx-auto rounded-circle profile">
+  <% } else if (user.about) { %> 
+<strong class="mt-2">About me:</strong> <%=user.about%>
+    <% } %> 
 </div>
 <!-- allow user to edit profile info if they are logged in -->
 <% if(typeof currentUser !== 'undefined' && currentUser.equals(user)) {%>

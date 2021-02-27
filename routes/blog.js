@@ -14,17 +14,18 @@ router.route('/')
 
 router.get('/new', isLoggedIn, blogs.renderNewForm);
 
+//individual blog route
 router.route('/:id')
     .get(catchAsync(blogs.showBlog))
     .put(isLoggedIn, isAuthor, upload.array('image'), validateBlog, catchAsync(blogs.updateBlog))
     .delete(isLoggedIn, isAuthor, catchAsync(blogs.deleteBlog));
 
-router.get('/:id/edit', isLoggedIn, isAuthor, blogs.renderEditForm);
+router.get('/:id/edit', isLoggedIn, isAuthor, blogs.renderEditForm); //edit blog
 
-router.get('/myblogs', blogs.renderUserBlogs);
+router.get('/myblogs', blogs.renderUserBlogs); //show currentUser blogs
 
-router.post('/:id/like', isLoggedIn, blogs.likeBlog);
+router.post('/:id/like', isLoggedIn, blogs.likeBlog); //like & unlike blog
 
-router.get('/index_user', blogs.renderUserBlogs);
+router.get('/index_user', blogs.renderUserBlogs); //show all blogs for particular user
 
 module.exports = router;

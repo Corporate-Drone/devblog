@@ -7,8 +7,10 @@ const { storage } = require('../cloudinary');
 const upload = multer({ storage });
 const { isLoggedIn, isAccount } = require('../middleware');
 
+//show all registered users
 router.get('/', users.renderAllUsers);
 
+//individual user profile
 router.route('/:username')
     .get(catchAsync(users.renderUserProfile))
     .delete(isLoggedIn, isAccount, catchAsync(users.deleteUser))

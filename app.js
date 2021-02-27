@@ -16,7 +16,7 @@ const User = require('./models/user');
 const userRoutes = require('./routes/users');
 const blogRoutes = require('./routes/blog');
 const commentRoutes = require('./routes/comments');
-const currentYear = require('./public/javascripts/currentYear');
+const {currentYear} = require('./public/javascripts/currentDate');
 
 mongoose.connect('mongodb://localhost:27017/blog', {
     useNewUrlParser: true,

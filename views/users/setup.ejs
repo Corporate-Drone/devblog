@@ -32,14 +32,15 @@
       </div>
       <div class="mb-3"><button class="btn btn-success">Save</button></div> 
     
-
-    <% } else { %> 
         <div class="mb-3">
-            <label class="form-label" for="about">About Me</label>
-            <textarea class="form-control" type="text" id="about" name="about"></textarea required>
-            <div class="valid-feedback">Valid.</div>
-            <div class="invalid-feedback">Please fill out this field.</div>
-          </div>
-          <div class="mb-3"><button class="btn btn-success">Save</button></div> 
+          <!-- display user About Me info if it is already filled out, otherwise show it as empty -->
+            <% } else if (user.about){ %> 
+            <textarea class="form-control" type="text" id="about" name="about"><%= user.about %> </textarea required>
+              <% } else { %> 
+                <textarea class="form-control" type="text" id="about" name="about"></textarea required>
+                  <div class="valid-feedback">Valid.</div>
+                  <div class="invalid-feedback">Please fill out this field.</div>
+                </div>
+                <div class="mb-3"><button class="btn btn-success">Save</button></div>
+                  <% } %> 
         </form>
-        <% } %> 

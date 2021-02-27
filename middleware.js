@@ -7,7 +7,15 @@ const Comment = require('./models/comment');
 //check if user is logged in
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
-        req.session.returnTo = req.originalUrl //store url user was on
+        const { id } = req.params; //take id from URL
+
+        //redirect to blog page if user was trying to like before logging in 
+        if (req.originalUrl.includes('like')) {
+            req.session.returnTo = '/blog' 
+        } else {
+            // store url user was on if not redirecting to like post
+            req.session.returnTo = req.originalUrl 
+        }
         req.flash('error', 'You must be signed in first!');
         return res.redirect('/login');
     }

@@ -1,6 +1,6 @@
 const Blog = require('../models/blog');
 const Comment = require('../models/comment');
-const date = require('../public/javascripts/currentDate');
+const {date} = require('../public/javascripts/currentDate');
 
 module.exports.createComment = async (req, res) => {
     const blog = await Blog.findById(req.params.id);
@@ -32,7 +32,7 @@ module.exports.updateComment = async (req, res) => {
 module.exports.deleteComment = async (req, res) => {
     const blog = await Blog.findById(req.params.id);
     const { id, commentId } = req.params;
-    await Blog.findByIdAndUpdate(id, { $pull: { comments: commentId } });
+    await Blog.findByIdAndUpdate(id, { $pull: { comments: commentId } }); //pull comment from Blog
     await Comment.findByIdAndDelete(commentId);
     res.redirect(`/blog/${blog._id}`);
 }
