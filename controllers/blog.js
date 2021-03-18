@@ -1,7 +1,7 @@
 const Blog = require('../models/blog');
 const { cloudinary } = require('../cloudinary');
 const User = require('../models/user');
-const date = require('../public/javascripts/currentDate');
+const {date} = require('../public/javascripts/currentDate');
 
 //render all blogs
 module.exports.index = async (req, res) => {
